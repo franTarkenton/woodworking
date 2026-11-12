@@ -1,0 +1,296 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 760" width="100%" height="100%" font-family="system-ui, -apple-system, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif">
+  <defs>
+    <marker id="arrow-start" viewBox="0 0 10 10" refX="2" refY="5" markerWidth="6" markerHeight="6" orient="auto">
+      <path d="M 10 1 L 2 5 L 10 9 z" fill="#1E3A5F"/>
+    </marker>
+    <marker id="arrow-end" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto">
+      <path d="M 0 1 L 8 5 L 0 9 z" fill="#1E3A5F"/>
+    </marker>
+    <marker id="callout-arrow" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto">
+      <path d="M 0 1 L 8 5 L 0 9 z" fill="#4A2C11"/>
+    </marker>
+    <filter id="shadow" x="-5%" y="-5%" width="110%" height="110%">
+      <feDropShadow dx="1" dy="1.5" stdDeviation="1.5" flood-color="#000000" flood-opacity="0.18"/>
+    </filter>
+  </defs>
+
+  <!-- Background -->
+  <rect width="1200" height="760" rx="10" fill="#FAF7F2" stroke="#D8CFC2" stroke-width="2"/>
+
+  <!-- Header Banner -->
+  <rect x="20" y="16" width="1160" height="52" rx="6" fill="#2C1D11"/>
+  <text x="40" y="47" fill="#FAF7F2" font-size="19" font-weight="700" letter-spacing="0.5">QUARTER-SAWN FIR SHELF — LABELED BLUEPRINT &amp; JOINERY LAYOUT</text>
+  <text x="1160" y="47" fill="#E6C699" font-size="14" font-weight="600" text-anchor="end">Overall: 44 1/2&quot; W × 44&quot; H × 19&quot; D  |  Carcass: 42 1/2&quot; W × 42&quot; H × 18&quot; D</text>
+
+  <!-- =========================================================================
+       LEFT PANEL: FRONT ELEVATION (Scale: 1 inch = 11 px)
+       Carcass X0 = 135, Y_top_carcass = 152, Y_floor = 152 + 42*11 = 614
+       Carcass Width = 42.5 * 11 = 467.5 px (X: 135 to 602.5)
+       Top Slab A: X = 135 - 11 = 124, Width = 44.5 * 11 = 489.5 px, Y = 130, H = 22 px
+  ========================================================================== -->
+  <g id="front-elevation">
+    <text x="368" y="98" fill="#2C1D11" font-size="16" font-weight="700" text-anchor="middle">1. FRONT ELEVATION (Labeled Parts A–R)</text>
+
+    <!-- Open Back Interior Cavity -->
+    <rect x="141.9" y="152" width="453.75" height="434.5" fill="#EFECE6" stroke="#C9BFA8" stroke-width="1"/>
+
+    <!-- H: Top Rear Anti-Racking Stretcher (2" tall = 22px at top of upper bay) -->
+    <rect x="139.1" y="152" width="459.25" height="22" fill="#B57B4C" fill-opacity="0.45" stroke="#5C3A1E" stroke-width="1" stroke-dasharray="4,2"/>
+    <text x="368.75" y="166" fill="#4A2C11" font-size="11" font-weight="600" text-anchor="middle">H — Top Rear Anti-Racking Stretcher (2&quot; × 41 3/4&quot;)</text>
+
+    <!-- B: Left & Right Outer Side Panels (5/8" = 6.875px, H = 42" = 462px) -->
+    <rect x="135" y="152" width="6.875" height="462" fill="#D99B66" stroke="#3A2312" stroke-width="1.4"/>
+    <rect x="595.625" y="152" width="6.875" height="462" fill="#D99B66" stroke="#3A2312" stroke-width="1.4"/>
+
+    <!-- E: Upper Full-Span Shelf (3/4" thick = 8.25px, Top at 27" from floor -> Y = 614 - 27*11 = 317, Bottom at 26.25" -> Y = 325.25) -->
+    <!-- Spans into 1/4" (2.75px) dados on both sides: X = 139.125, W = 41.75 * 11 = 459.25 -->
+    <rect x="139.125" y="317" width="459.25" height="8.25" fill="#B86B3A" stroke="#3A2312" stroke-width="1.4"/>
+
+    <!-- D: Lower Full Shelf (5/8" thick = 6.875px, Top at 15.75" -> Y = 614 - 173.25 = 440.75, Bottom at 15.125" -> Y = 447.625) -->
+    <rect x="139.125" y="440.75" width="459.25" height="6.875" fill="#E3B07E" stroke="#3A2312" stroke-width="1.4"/>
+
+    <!-- F: Front Floorboard (2 1/2" H = 27.5px, Y = 614 - 27.5 = 586.5 to 614) -->
+    <rect x="139.125" y="586.5" width="459.25" height="27.5" fill="#C4834E" stroke="#3A2312" stroke-width="1.4"/>
+    <!-- Hidden dashed line showing Bottom Shelf C (5/8" thick) flush with top of F (Y = 586.5 to 593.375) -->
+    <line x1="141.875" y1="593.375" x2="595.625" y2="593.375" stroke="#3A2312" stroke-width="1.2" stroke-dasharray="5,3"/>
+
+    <!-- G: Two Vertical Dividers in Lower 12 5/8" Bay
+         Left Bay = 13.25" (145.75px) -> Div1 X = 141.875 + 145.75 = 287.625, W = 6.875px
+         Mid Bay  = 13.50" (148.50px) -> Div2 X = 294.5 + 148.5 = 443.0, W = 6.875px
+         Height = 13.125" (144.375px), Y = 447.625 - 2.75 = 444.875 to 589.25 -->
+    <rect x="287.625" y="444.875" width="6.875" height="144.375" fill="#D4925C" stroke="#3A2312" stroke-width="1.4"/>
+    <rect x="443.0" y="444.875" width="6.875" height="144.375" fill="#D4925C" stroke="#3A2312" stroke-width="1.4"/>
+
+    <!-- J: Two Inset Drawers in Center Bay (X = 294.5 + 0.7 = 295.2, W = 13.375*11 = 147.1px)
+         Each Drawer Front Height = 6.125" = 67.375px
+         Upper Drawer Y = 447.625 + 1.375 = 449.0 to 516.375
+         Lower Drawer Y = 516.375 + 1.375 = 517.75 to 585.125 -->
+    <rect x="295.2" y="449.0" width="147.1" height="67.375" fill="#E8B888" stroke="#3A2312" stroke-width="1.4"/>
+    <circle cx="368.75" cy="480" r="4.2" fill="#3A2312"/>
+    <rect x="295.2" y="517.75" width="147.1" height="67.375" fill="#E8B888" stroke="#3A2312" stroke-width="1.4"/>
+    <circle cx="368.75" cy="548.75" r="4.2" fill="#3A2312"/>
+
+    <!-- R: Shop-Made Runners (1/4" x 1/2" strips shown dotted on inside of G) -->
+    <rect x="294.5" y="480" width="2.75" height="5.5" fill="#8E4B22"/>
+    <rect x="440.25" y="480" width="2.75" height="5.5" fill="#8E4B22"/>
+    <rect x="294.5" y="548.75" width="2.75" height="5.5" fill="#8E4B22"/>
+    <rect x="440.25" y="548.75" width="2.75" height="5.5" fill="#8E4B22"/>
+
+    <!-- A: 2" Overhanging Top Slab (44.5" W = 489.5px, 2" H = 22px, X = 124, Y = 130) -->
+    <rect x="124" y="130" width="489.5" height="22" fill="#C87D4B" stroke="#3A2312" stroke-width="1.6"/>
+
+    <!-- Part ID Badges on Front Elevation -->
+    <!-- Badge A -->
+    <g filter="url(#shadow)">
+      <rect x="260" y="132" width="218" height="18" rx="4" fill="#FFFDF9" stroke="#4A2C11" stroke-width="1.2"/>
+      <text x="369" y="145" fill="#231409" font-size="11.5" font-weight="700" text-anchor="middle">A — Top Slab (2&quot; × 19&quot; × 44 1/2&quot;)</text>
+    </g>
+
+    <!-- Badge B (Left & Right) -->
+    <line x1="108" y1="365" x2="134" y2="365" stroke="#4A2C11" stroke-width="1.5" marker-end="url(#callout-arrow)"/>
+    <g filter="url(#shadow)">
+      <circle cx="94" cy="365" r="13" fill="#FFFDF9" stroke="#4A2C11" stroke-width="1.4"/>
+      <text x="94" y="369" fill="#231409" font-size="12" font-weight="700" text-anchor="middle">B</text>
+    </g>
+    <line x1="629" y1="365" x2="603" y2="365" stroke="#4A2C11" stroke-width="1.5" marker-end="url(#callout-arrow)"/>
+    <g filter="url(#shadow)">
+      <circle cx="643" cy="365" r="13" fill="#FFFDF9" stroke="#4A2C11" stroke-width="1.4"/>
+      <text x="643" y="369" fill="#231409" font-size="12" font-weight="700" text-anchor="middle">B</text>
+    </g>
+
+    <!-- Badge E -->
+    <g filter="url(#shadow)">
+      <rect x="242" y="311.5" width="254" height="19" rx="4" fill="#FFFDF9" stroke="#4A2C11" stroke-width="1.2"/>
+      <text x="369" y="324.5" fill="#231409" font-size="11" font-weight="700" text-anchor="middle">E — Upper Shelf (3/4&quot; × 18&quot; × 41 3/4&quot;)</text>
+    </g>
+
+    <!-- Badge D -->
+    <g filter="url(#shadow)">
+      <rect x="245" y="434.5" width="248" height="19" rx="4" fill="#FFFDF9" stroke="#4A2C11" stroke-width="1.2"/>
+      <text x="369" y="447.5" fill="#231409" font-size="11" font-weight="700" text-anchor="middle">D — Lower Shelf (5/8&quot; × 18&quot; × 41 3/4&quot;)</text>
+    </g>
+
+    <!-- Badges G -->
+    <g filter="url(#shadow)">
+      <circle cx="291" cy="517" r="11" fill="#FFFDF9" stroke="#4A2C11" stroke-width="1.2"/>
+      <text x="291" y="521" fill="#231409" font-size="11" font-weight="700" text-anchor="middle">G</text>
+      <circle cx="446.5" cy="517" r="11" fill="#FFFDF9" stroke="#4A2C11" stroke-width="1.2"/>
+      <text x="446.5" y="521" fill="#231409" font-size="11" font-weight="700" text-anchor="middle">G</text>
+    </g>
+
+    <!-- Badges J (Drawers) -->
+    <g filter="url(#shadow)">
+      <rect x="313" y="492" width="112" height="19" rx="4" fill="#FFFDF9" stroke="#4A2C11" stroke-width="1.1"/>
+      <text x="369" y="505" fill="#231409" font-size="10.5" font-weight="700" text-anchor="middle">J — Upper Drawer</text>
+      <rect x="313" y="560" width="112" height="19" rx="4" fill="#FFFDF9" stroke="#4A2C11" stroke-width="1.1"/>
+      <text x="369" y="573" fill="#231409" font-size="10.5" font-weight="700" text-anchor="middle">J — Lower Drawer</text>
+    </g>
+
+    <!-- Badge F & C -->
+    <g filter="url(#shadow)">
+      <rect x="225" y="590.5" width="288" height="19" rx="4" fill="#FFFDF9" stroke="#4A2C11" stroke-width="1.2"/>
+      <text x="369" y="603.5" fill="#231409" font-size="11" font-weight="700" text-anchor="middle">F — Front Floorboard (2 1/2&quot; H) + Shelf C Flush</text>
+    </g>
+
+    <!-- Bay Opening Callouts -->
+    <text x="368.75" y="242" fill="#4A3A2A" font-size="13" font-weight="700" text-anchor="middle">UPPER OPEN BAY: 41 1/4&quot; W × 15&quot; H</text>
+    <text x="368.75" y="259" fill="#6E5A46" font-size="11" text-anchor="middle">(Adjusted by -1/2&quot; so total height w/ 2&quot; top = 44&quot; exact)</text>
+
+    <text x="368.75" y="384" fill="#4A3A2A" font-size="13" font-weight="700" text-anchor="middle">MIDDLE OPEN BAY: 41 1/4&quot; W × 10 1/2&quot; H</text>
+
+    <text x="214.5" y="510" fill="#4A3A2A" font-size="11.5" font-weight="700" text-anchor="middle">LEFT BAY</text>
+    <text x="214.5" y="526" fill="#5C4938" font-size="11" text-anchor="middle">13 1/4&quot; W</text>
+    <text x="214.5" y="541" fill="#5C4938" font-size="11" text-anchor="middle">× 12 5/8&quot; H</text>
+
+    <text x="523" y="510" fill="#4A3A2A" font-size="11.5" font-weight="700" text-anchor="middle">RIGHT BAY</text>
+    <text x="523" y="526" fill="#5C4938" font-size="11" text-anchor="middle">13 1/4&quot; W</text>
+    <text x="523" y="541" fill="#5C4938" font-size="11" text-anchor="middle">× 12 5/8&quot; H</text>
+
+    <!-- DIMENSION LINES: FRONT ELEVATION -->
+    <!-- Top Overall Width 44 1/2" -->
+    <line x1="124" y1="114" x2="613.5" y2="114" stroke="#1E3A5F" stroke-width="1.4" marker-start="url(#arrow-start)" marker-end="url(#arrow-end)"/>
+    <line x1="124" y1="110" x2="124" y2="128" stroke="#1E3A5F" stroke-width="0.9"/>
+    <line x1="613.5" y1="110" x2="613.5" y2="128" stroke="#1E3A5F" stroke-width="0.9"/>
+    <rect x="268" y="104" width="202" height="18" fill="#FAF7F2"/>
+    <text x="369" y="117" fill="#1E3A5F" font-size="11.5" font-weight="700" text-anchor="middle">44 1/2&quot; Overall Top Width</text>
+
+    <!-- Bottom Bay Widths (13 1/4", 13 1/2", 13 1/4") -->
+    <line x1="141.9" y1="636" x2="287.6" y2="636" stroke="#1E3A5F" stroke-width="1.3" marker-start="url(#arrow-start)" marker-end="url(#arrow-end)"/>
+    <text x="214.7" y="651" fill="#1E3A5F" font-size="11" font-weight="700" text-anchor="middle">13 1/4&quot;</text>
+
+    <line x1="294.5" y1="636" x2="443.0" y2="636" stroke="#1E3A5F" stroke-width="1.3" marker-start="url(#arrow-start)" marker-end="url(#arrow-end)"/>
+    <text x="368.7" y="651" fill="#1E3A5F" font-size="11" font-weight="700" text-anchor="middle">13 1/2&quot; (Drawers)</text>
+
+    <line x1="449.9" y1="636" x2="595.6" y2="636" stroke="#1E3A5F" stroke-width="1.3" marker-start="url(#arrow-start)" marker-end="url(#arrow-end)"/>
+    <text x="522.7" y="651" fill="#1E3A5F" font-size="11" font-weight="700" text-anchor="middle">13 1/4&quot;</text>
+
+    <!-- Bottom Carcass Outer Width 42 1/2" -->
+    <line x1="135" y1="668" x2="602.5" y2="668" stroke="#1E3A5F" stroke-width="1.5" marker-start="url(#arrow-start)" marker-end="url(#arrow-end)"/>
+    <line x1="135" y1="616" x2="135" y2="673" stroke="#1E3A5F" stroke-width="0.9" stroke-dasharray="3,2"/>
+    <line x1="602.5" y1="616" x2="602.5" y2="673" stroke="#1E3A5F" stroke-width="0.9" stroke-dasharray="3,2"/>
+    <rect x="278" y="658" width="182" height="18" fill="#FAF7F2"/>
+    <text x="369" y="672" fill="#1E3A5F" font-size="12" font-weight="700" text-anchor="middle">42 1/2&quot; Carcass Width</text>
+
+    <!-- Left Vertical Section Heights -->
+    <!-- 15" Upper Bay -->
+    <line x1="68" y1="152" x2="68" y2="317" stroke="#1E3A5F" stroke-width="1.3" marker-start="url(#arrow-start)" marker-end="url(#arrow-end)"/>
+    <line x1="64" y1="152" x2="132" y2="152" stroke="#1E3A5F" stroke-width="0.8" stroke-dasharray="3,2"/>
+    <line x1="64" y1="317" x2="132" y2="317" stroke="#1E3A5F" stroke-width="0.8" stroke-dasharray="3,2"/>
+    <text x="62" y="238" fill="#1E3A5F" font-size="11" font-weight="700" text-anchor="end">15&quot;</text>
+
+    <!-- 10 1/2" Middle Bay -->
+    <line x1="68" y1="325.25" x2="68" y2="440.75" stroke="#1E3A5F" stroke-width="1.3" marker-start="url(#arrow-start)" marker-end="url(#arrow-end)"/>
+    <line x1="64" y1="325.25" x2="132" y2="325.25" stroke="#1E3A5F" stroke-width="0.8" stroke-dasharray="3,2"/>
+    <line x1="64" y1="440.75" x2="132" y2="440.75" stroke="#1E3A5F" stroke-width="0.8" stroke-dasharray="3,2"/>
+    <text x="62" y="387" fill="#1E3A5F" font-size="11" font-weight="700" text-anchor="end">10 1/2&quot;</text>
+
+    <!-- 12 5/8" Lower Bay -->
+    <line x1="68" y1="447.625" x2="68" y2="586.5" stroke="#1E3A5F" stroke-width="1.3" marker-start="url(#arrow-start)" marker-end="url(#arrow-end)"/>
+    <line x1="64" y1="447.625" x2="132" y2="447.625" stroke="#1E3A5F" stroke-width="0.8" stroke-dasharray="3,2"/>
+    <line x1="64" y1="586.5" x2="132" y2="586.5" stroke="#1E3A5F" stroke-width="0.8" stroke-dasharray="3,2"/>
+    <text x="62" y="520" fill="#1E3A5F" font-size="11" font-weight="700" text-anchor="end">12 5/8&quot;</text>
+
+    <!-- 2 1/2" Floorboard -->
+    <line x1="68" y1="586.5" x2="68" y2="614" stroke="#1E3A5F" stroke-width="1.3" marker-start="url(#arrow-start)" marker-end="url(#arrow-end)"/>
+    <line x1="64" y1="614" x2="132" y2="614" stroke="#1E3A5F" stroke-width="0.8" stroke-dasharray="3,2"/>
+    <text x="62" y="604" fill="#1E3A5F" font-size="11" font-weight="700" text-anchor="end">2 1/2&quot;</text>
+
+    <!-- Right Overall Height 44" & Carcass 42" -->
+    <line x1="668" y1="152" x2="668" y2="614" stroke="#1E3A5F" stroke-width="1.4" marker-start="url(#arrow-start)" marker-end="url(#arrow-end)"/>
+    <text x="674" y="388" fill="#1E3A5F" font-size="11.5" font-weight="700">42&quot; Carcass</text>
+
+    <line x1="748" y1="130" x2="748" y2="614" stroke="#1E3A5F" stroke-width="1.5" marker-start="url(#arrow-start)" marker-end="url(#arrow-end)"/>
+    <line x1="616" y1="130" x2="753" y2="130" stroke="#1E3A5F" stroke-width="0.8" stroke-dasharray="3,2"/>
+    <line x1="605" y1="614" x2="753" y2="614" stroke="#1E3A5F" stroke-width="0.8" stroke-dasharray="3,2"/>
+    <text x="754" y="370" fill="#1E3A5F" font-size="12" font-weight="700">44&quot; Total</text>
+  </g>
+
+  <!-- Divider Line -->
+  <line x1="815" y1="82" x2="815" y2="690" stroke="#D8CFC2" stroke-width="1.5" stroke-dasharray="6,4"/>
+
+  <!-- =========================================================================
+       RIGHT PANEL: SIDE CROSS-SECTION (Through Center Drawer Bay)
+       Scale: 1 inch = 11 px
+       Z_back = 890, Z_front_carcass = 890 + 18*11 = 1088, Z_front_top = 1088 + 11 = 1099
+  ========================================================================== -->
+  <g id="side-section">
+    <text x="1002" y="98" fill="#2C1D11" font-size="16" font-weight="700" text-anchor="middle">2. SIDE SECTION (Center Bay)</text>
+
+    <!-- Side Panel Outline B -->
+    <rect x="890" y="152" width="198" height="462" fill="#EFECE6" stroke="#8A7968" stroke-width="1.2" stroke-dasharray="4,3"/>
+
+    <!-- A: Top Slab (19" D = 209px, 2" H = 22px, Flush at Back X=890, 1" Front Overhang to X=1099) -->
+    <rect x="890" y="130" width="209" height="22" fill="#C87D4B" stroke="#3A2312" stroke-width="1.5"/>
+    <text x="994" y="145" fill="#FFFDF9" font-size="11" font-weight="700" text-anchor="middle">A (19&quot; D, 1&quot; Front Overhang)</text>
+
+    <!-- H: Top Rear Anti-Racking Cleat (5/8" x 2" at back top) -->
+    <rect x="890" y="152" width="6.875" height="22" fill="#A96336" stroke="#3A2312" stroke-width="1.2"/>
+    <text x="903" y="167" fill="#4A2C11" font-size="10.5" font-weight="700">H (Rear Cleat)</text>
+
+    <!-- E: Upper Shelf (3/4" x 18" D) -->
+    <rect x="890" y="317" width="198" height="8.25" fill="#B86B3A" stroke="#3A2312" stroke-width="1.4"/>
+    <text x="989" y="311" fill="#231409" font-size="11" font-weight="700" text-anchor="middle">E — 3/4&quot; Shelf (Y = 26 1/4&quot; to 27&quot;)</text>
+
+    <!-- D: Lower Shelf (5/8" x 18" D) -->
+    <rect x="890" y="440.75" width="198" height="6.875" fill="#E3B07E" stroke="#3A2312" stroke-width="1.4"/>
+    <text x="989" y="435" fill="#231409" font-size="11" font-weight="700" text-anchor="middle">D — 5/8&quot; Shelf (Y = 15 1/8&quot; to 15 3/4&quot;)</text>
+
+    <!-- Upper & Lower Drawers inside Center Bay (17" deep = 187px, from X = 901 to 1088) -->
+    <!-- Upper Drawer Side K + Front J + Bottom L + Runner R -->
+    <rect x="901" y="450" width="180.125" height="64.6" fill="#DEA875" stroke="#3A2312" stroke-width="1.2"/>
+    <rect x="1081.125" y="449" width="6.875" height="67.375" fill="#E8B888" stroke="#3A2312" stroke-width="1.3"/>
+    <rect x="904" y="506" width="178.75" height="4.125" fill="#F0CA9E" stroke="#3A2312" stroke-width="0.9"/>
+    <rect x="901" y="480" width="180.125" height="5.5" fill="#8E4B22" stroke="#231409" stroke-width="0.9"/>
+    <text x="990" y="473" fill="#231409" font-size="10.5" font-weight="700" text-anchor="middle">K (17&quot; Side) + L (Bottom)</text>
+    <text x="990" y="497" fill="#5A2D0C" font-size="10" font-weight="700" text-anchor="middle">R (1/4&quot;×1/2&quot; Runner in Groove)</text>
+
+    <!-- Lower Drawer Side K + Front J + Bottom L + Runner R -->
+    <rect x="901" y="518.75" width="180.125" height="64.6" fill="#DEA875" stroke="#3A2312" stroke-width="1.2"/>
+    <rect x="1081.125" y="517.75" width="6.875" height="67.375" fill="#E8B888" stroke="#3A2312" stroke-width="1.3"/>
+    <rect x="904" y="574.75" width="178.75" height="4.125" fill="#F0CA9E" stroke="#3A2312" stroke-width="0.9"/>
+    <rect x="901" y="548.75" width="180.125" height="5.5" fill="#8E4B22" stroke="#231409" stroke-width="0.9"/>
+    <text x="990" y="542" fill="#231409" font-size="10.5" font-weight="700" text-anchor="middle">K (17&quot; Side) + L (Bottom)</text>
+    <text x="990" y="566" fill="#5A2D0C" font-size="10" font-weight="700" text-anchor="middle">R (1/4&quot;×1/2&quot; Runner in Groove)</text>
+
+    <!-- H: Drawer Stop at rear of drawer bay -->
+    <rect x="890" y="564.5" width="6.875" height="22" fill="#A96336" stroke="#3A2312" stroke-width="1.2"/>
+
+    <!-- F: Front & Rear Floorboards (2 1/2" H = 27.5px at X=890 and X=1081.125) -->
+    <rect x="890" y="586.5" width="6.875" height="27.5" fill="#C4834E" stroke="#3A2312" stroke-width="1.4"/>
+    <rect x="1081.125" y="586.5" width="6.875" height="27.5" fill="#C4834E" stroke="#3A2312" stroke-width="1.4"/>
+
+    <!-- C: Bottom Shelf (16 3/4" W = 184.25px between front & rear F, top flush at 2 1/2" -> Y = 586.5 to 593.375) -->
+    <rect x="896.875" y="586.5" width="184.25" height="6.875" fill="#E3B07E" stroke="#3A2312" stroke-width="1.4"/>
+    <text x="989" y="606" fill="#231409" font-size="10.5" font-weight="700" text-anchor="middle">C — Bottom Shelf (16 3/4&quot; D, Flush w/ F)</text>
+
+    <!-- Front / Back Labels & Depth Dimensions -->
+    <line x1="890" y1="114" x2="1099" y2="114" stroke="#1E3A5F" stroke-width="1.4" marker-start="url(#arrow-start)" marker-end="url(#arrow-end)"/>
+    <line x1="890" y1="110" x2="890" y2="128" stroke="#1E3A5F" stroke-width="0.9"/>
+    <line x1="1099" y1="110" x2="1099" y2="128" stroke="#1E3A5F" stroke-width="0.9"/>
+    <text x="994.5" y="109" fill="#1E3A5F" font-size="11.5" font-weight="700" text-anchor="middle">19&quot; Top Depth</text>
+
+    <line x1="890" y1="650" x2="1088" y2="650" stroke="#1E3A5F" stroke-width="1.5" marker-start="url(#arrow-start)" marker-end="url(#arrow-end)"/>
+    <line x1="890" y1="616" x2="890" y2="656" stroke="#1E3A5F" stroke-width="0.9" stroke-dasharray="3,2"/>
+    <line x1="1088" y1="616" x2="1088" y2="656" stroke="#1E3A5F" stroke-width="0.9" stroke-dasharray="3,2"/>
+    <text x="989" y="668" fill="#1E3A5F" font-size="12" font-weight="700" text-anchor="middle">18&quot; Carcass Depth</text>
+
+    <text x="890" y="632" fill="#5C3A1E" font-size="11" font-weight="700" text-anchor="middle">BACK (Flush)</text>
+    <text x="1088" y="632" fill="#5C3A1E" font-size="11" font-weight="700" text-anchor="middle">FRONT</text>
+  </g>
+
+  <!-- Footer Legend Strip -->
+  <rect x="20" y="696" width="1160" height="46" rx="6" fill="#EFECE6" stroke="#D8CFC2" stroke-width="1.2"/>
+  <text x="36" y="724" fill="#2C1D11" font-size="12.5" font-weight="700">PART KEY:</text>
+  <text x="112" y="724" fill="#3A2312" font-size="12">
+    <tspan font-weight="700">A</tspan> Top Slab (2&quot;)   |   
+    <tspan font-weight="700">B</tspan> Outer Sides (5/8&quot;)   |   
+    <tspan font-weight="700">C</tspan> Bottom Shelf (5/8&quot;)   |   
+    <tspan font-weight="700">D</tspan> Lower Shelf (5/8&quot;)   |   
+    <tspan font-weight="700">E</tspan> Upper Shelf (3/4&quot;)   |   
+    <tspan font-weight="700">F</tspan> Floorboards (5/8&quot;)   |   
+    <tspan font-weight="700">G</tspan> Bay Dividers (5/8&quot;)   |   
+    <tspan font-weight="700">H</tspan> Rear Cleats   |   
+    <tspan font-weight="700">J/K/L/R</tspan> Drawers &amp; Runners
+  </text>
+</svg>
+

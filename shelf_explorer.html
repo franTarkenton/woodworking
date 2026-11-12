@@ -1,0 +1,352 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8" />
+  <title>Quarter-Sawn Fir Shelf — Interactive 3D &amp; Exploded Part Explorer</title>
+  <script src="https://www.gstatic.com/antigravity/web/dev/tailwindcss.min.js"></script>
+  <style>
+    :root {
+      --background: #FAF7F2;
+      --card: #FFFDF9;
+      --card-border: #D8CFC2;
+      --foreground: #231409;
+      --muted-foreground: #6E5A46;
+      --primary: #1E3A5F;
+      --primary-foreground: #FFFFFF;
+    }
+  </style>
+</head>
+<body class="bg-[var(--background)] text-[var(--foreground)] antialiased p-4 m-0 select-none">
+  <div class="max-w-5xl mx-auto py-2 space-y-2.5">
+    <!-- Top Controls Bar -->
+    <div class="flex flex-wrap items-center justify-between gap-3 pb-2 border-b border-[var(--card-border)] text-xs">
+      <div class="flex items-center gap-4">
+        <label class="text-[var(--muted-foreground)] flex items-center gap-2 font-medium">
+          Explode Parts
+          <input id="explodeSlider" type="range" min="0" max="100" value="28" class="w-24 accent-[var(--primary)] cursor-pointer" />
+        </label>
+        <label class="text-[var(--muted-foreground)] flex items-center gap-2 font-medium">
+          Pull Drawers
+          <input id="drawerSlider" type="range" min="0" max="100" value="40" class="w-20 accent-[var(--primary)] cursor-pointer" />
+        </label>
+        <label class="text-[var(--muted-foreground)] flex items-center gap-1.5 cursor-pointer">
+          <input id="labelsToggle" type="checkbox" checked class="accent-[var(--primary)]" />
+          Show IDs (A–R)
+        </label>
+      </div>
+      <div class="flex items-center gap-1.5">
+        <button id="btnIso" class="px-2 py-1 rounded border border-[var(--card-border)] bg-[var(--card)] hover:opacity-80 text-xs font-medium">3D View</button>
+        <button id="btnFront" class="px-2 py-1 rounded border border-[var(--card-border)] bg-[var(--card)] hover:opacity-80 text-xs font-medium">Front</button>
+        <button id="btnSide" class="px-2 py-1 rounded border border-[var(--card-border)] bg-[var(--card)] hover:opacity-80 text-xs font-medium">Side</button>
+      </div>
+    </div>
+
+    <!-- Main Interactive Area: 3D Canvas + Part Inspector Sidebar -->
+    <div class="grid grid-cols-12 gap-3 items-start">
+      <div class="col-span-8 relative rounded border border-[var(--card-border)] bg-[var(--card)] overflow-hidden">
+        <canvas id="shelfCanvas" height="380" class="w-full block cursor-grab active:cursor-grabbing"></canvas>
+        <div class="absolute bottom-1.5 left-2 text-[11px] text-[var(--muted-foreground)] pointer-events-none">
+          Drag to rotate · Click any part or badge to inspect
+        </div>
+      </div>
+
+      <!-- Part Inspector & Quick Selector -->
+      <div class="col-span-4 flex flex-col justify-between space-y-2 text-xs">
+        <div id="partCard" class="p-2.5 rounded border border-[var(--card-border)] bg-[var(--card)] space-y-1.5">
+          <div class="flex items-center justify-between">
+            <span id="partBadge" class="px-2 py-0.5 rounded font-mono font-bold text-xs bg-[var(--primary)] text-[var(--primary-foreground)]">Part A</span>
+            <span id="partQty" class="font-mono text-[var(--muted-foreground)]">Qty: 1</span>
+          </div>
+          <div id="partName" class="font-semibold text-sm text-[var(--foreground)]">Top Slab (Overhanging)</div>
+          <div id="partDims" class="font-mono text-xs py-1 px-2 rounded bg-[var(--background)] border border-[var(--card-border)] text-[var(--foreground)]">
+            2" T × 19" W × 44 1/2" L
+          </div>
+          <p id="partNotes" class="text-[var(--muted-foreground)] leading-snug text-xs">
+            Overhangs front and sides by 1", flush at the back. Sits on top of 42" carcass (total height = 44").
+          </p>
+        </div>
+
+        <!-- Part Pill Selector Grid -->
+        <div class="p-2 rounded border border-[var(--card-border)] bg-[var(--card)] space-y-1.5">
+          <div class="text-[11px] font-medium text-[var(--muted-foreground)]">Click Part ID to Highlight on Model:</div>
+          <div id="partButtons" class="grid grid-cols-5 gap-1"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    const PARTS_META = {
+      A: { id: "A", name: "Top Slab (Overhanging)", qty: 1, dims: '2" T × 19" W × 44 1/2" L', notes: 'Overhangs front & sides by 1", flush at back. Total height with top = 44".', color: "#C87D4B" },
+      B: { id: "B", name: "Outer Side Panels (L & R)", qty: 2, dims: '5/8" T × 18" W × 42" L', notes: '1/4" deep cross-dados on inside face at 1 7/8" (C), 15 1/8" (D), and 26 1/4" (E).', color: "#D99B66" },
+      C: { id: "C", name: "Bottom Shelf (Flush w/ F)", qty: 1, dims: '5/8" T × 16 3/4" W × 41 3/4" L', notes: 'Top face sits at 2 1/2" flush with Floorboard F. Two 1/4" dados on top for G.', color: "#E3B07E" },
+      D: { id: "D", name: "Lower Full Shelf", qty: 1, dims: '5/8" T × 18" W × 41 3/4" L', notes: 'Sits above the 12 5/8" 3-section bay (bottom at 15 1/8"). Dados underneath for G.', color: "#E3B07E" },
+      E: { id: "E", name: "Upper Full Shelf (3/4\" Thick)", qty: 1, dims: '3/4" T × 18" W × 41 3/4" L', notes: 'Heavy-duty 3/4" board prevents sag across full 41 1/4" span. Bottom at 26 1/4".', color: "#B86B3A" },
+      F: { id: "F", name: "Front & Rear Floorboards", qty: 2, dims: '5/8" T × 2 1/2" W × 41 3/4" L', notes: '2 1/2" high base aprons at front and back. Locks bottom against racking.', color: "#C4834E" },
+      G: { id: "G", name: "Lower Vertical Dividers", qty: 2, dims: '5/8" T × 18" W × 13 1/8" L', notes: 'Divides lower section into 13 1/4" (L), 13 1/2" (Center Drawers), 13 1/4" (R).', color: "#D4925C" },
+      H: { id: "H", name: "Rear Cleat & Drawer Stop", qty: 2, dims: '5/8" T × 2" W × 41 3/4" / 13 1/2" L', notes: 'Top rear cleat prevents racking on open back; lower stop keeps drawers flush.', color: "#A96336" },
+      J: { id: "J", name: "Inset Drawer Fronts & Backs", qty: 4, dims: '5/8" T × 6 1/8" W × 13 3/8" L', notes: '2 fronts (6 1/8" H × 13 3/8" L) with 1/8" penny gap; 2 backs (5 1/2" H × 12 5/8" L).', color: "#E8B888" },
+      K: { id: "K", name: "Grooved Drawer Sides", qty: 4, dims: '5/8" T × 5 7/8" W × 17" L', notes: 'Plow 1/4" deep × 17/32" wide horizontal groove centered on outside face for runner R.', color: "#DEA875" },
+      L: { id: "L", name: "Drawer Bottom Panels", qty: 2, dims: '3/8" T × 12 5/8" W × 16 1/4" L', notes: 'Resawn 3/8" fir captured in 1/4" grooves inside J and K.', color: "#F0CA9E" },
+      R: { id: "R", name: "Shop-Made Drawer Runners", qty: 4, dims: '1/4" T × 1/2" W × 17" L', notes: 'Mounted inside dividers G at Y = 5 1/2" and Y = 11 3/4" from floor.', color: "#8E4B22" }
+    };
+
+    let selectedPart = "A";
+    let rotY = -0.52;
+    let rotX = 0.32;
+    let isDragging = false;
+    let lastX = 0, lastY = 0;
+    let labelHitBoxes = [];
+
+    const canvas = document.getElementById("shelfCanvas");
+    const ctx = canvas.getContext("2d");
+    const explodeSlider = document.getElementById("explodeSlider");
+    const drawerSlider = document.getElementById("drawerSlider");
+    const labelsToggle = document.getElementById("labelsToggle");
+
+    const partButtonsContainer = document.getElementById("partButtons");
+    Object.keys(PARTS_META).forEach(pid => {
+      const btn = document.createElement("button");
+      btn.dataset.pid = pid;
+      btn.className = "py-1 px-1.5 rounded font-mono font-bold text-xs border border-[var(--card-border)] transition-all";
+      btn.textContent = pid;
+      btn.onclick = () => selectPart(pid);
+      partButtonsContainer.appendChild(btn);
+    });
+
+    function selectPart(pid) {
+      selectedPart = pid;
+      const meta = PARTS_META[pid];
+      document.getElementById("partBadge").textContent = "Part " + meta.id;
+      document.getElementById("partQty").textContent = "Qty: " + meta.qty;
+      document.getElementById("partName").textContent = meta.name;
+      document.getElementById("partDims").textContent = meta.dims;
+      document.getElementById("partNotes").textContent = meta.notes;
+
+      Array.from(partButtonsContainer.children).forEach(btn => {
+        if (btn.dataset.pid === pid) {
+          btn.style.backgroundColor = meta.color;
+          btn.style.color = "#1F1209";
+          btn.style.borderColor = "#3A2312";
+        } else {
+          btn.style.backgroundColor = "transparent";
+          btn.style.color = "var(--foreground)";
+          btn.style.borderColor = "var(--card-border)";
+        }
+      });
+      draw();
+    }
+
+    function buildBoxes(explode, drawerPull) {
+      const e = explode * 9.0;
+      const dPull = drawerPull * 11.5;
+      const ST = 0.625;
+      const DADO = 0.25;
+      const FULL_L = 41.75;
+
+      const boxes = [
+        { id: "A", x: -1.0, y: 42.0 + e * 0.95, z: 0, dx: 44.5, dy: 2.0, dz: 19.0, showLabel: true },
+        { id: "B", x: -e * 1.0, y: 0, z: 0, dx: ST, dy: 42.0, dz: 18.0, showLabel: true },
+        { id: "B", x: 42.5 - ST + e * 1.0, y: 0, z: 0, dx: ST, dy: 42.0, dz: 18.0, showLabel: false },
+        { id: "C", x: ST - DADO, y: 1.875 - e * 0.25, z: ST, dx: FULL_L, dy: ST, dz: 16.75, showLabel: true },
+        { id: "F", x: ST - DADO, y: -e * 0.35, z: 18.0 - ST + e * 0.65, dx: FULL_L, dy: 2.5, dz: ST, showLabel: true },
+        { id: "F", x: ST - DADO, y: -e * 0.35, z: -e * 0.55, dx: FULL_L, dy: 2.5, dz: ST, showLabel: false },
+        { id: "D", x: ST - DADO, y: 15.125 + e * 0.12, z: 0, dx: FULL_L, dy: ST, dz: 18.0, showLabel: true },
+        { id: "E", x: ST - DADO, y: 26.25 + e * 0.42, z: 0, dx: FULL_L, dy: 0.75, dz: 18.0, showLabel: true },
+        { id: "G", x: 13.875 - e * 0.25, y: 2.25, z: 0, dx: ST, dy: 13.125, dz: 18.0, showLabel: true },
+        { id: "G", x: 28.0 + e * 0.25, y: 2.25, z: 0, dx: ST, dy: 13.125, dz: 18.0, showLabel: false },
+        { id: "H", x: ST - DADO, y: 40.0 + e * 0.5, z: -e * 0.6, dx: FULL_L, dy: 2.0, dz: ST, showLabel: true },
+        { id: "H", x: 14.5, y: 2.5, z: -e * 0.4, dx: 13.5, dy: 2.0, dz: ST, showLabel: false },
+        { id: "R", x: 14.5 - e * 0.15, y: 5.3, z: 1.0, dx: 0.25, dy: 0.5, dz: 17.0, showLabel: true },
+        { id: "R", x: 27.75 + e * 0.15, y: 5.3, z: 1.0, dx: 0.25, dy: 0.5, dz: 17.0, showLabel: false },
+        { id: "R", x: 14.5 - e * 0.15, y: 11.55, z: 1.0, dx: 0.25, dy: 0.5, dz: 17.0, showLabel: false },
+        { id: "R", x: 27.75 + e * 0.15, y: 11.55, z: 1.0, dx: 0.25, dy: 0.5, dz: 17.0, showLabel: false }
+      ];
+
+      [0, 1].forEach(idx => {
+        const y0 = 2.625 + idx * 6.25;
+        const zPull = dPull * (idx === 0 ? 1.0 : 0.65) + e * (idx === 0 ? 0.9 : 0.55);
+        const zBase = 1.0 + zPull;
+        boxes.push({ id: "J", x: 14.5625, y: y0, z: zBase + 16.375, dx: 13.375, dy: 6.125, dz: ST, showLabel: idx === 1 });
+        boxes.push({ id: "J", x: 15.1875, y: y0 + 0.5, z: zBase, dx: 12.125, dy: 5.375, dz: ST, showLabel: false });
+        boxes.push({ id: "K", x: 14.5625, y: y0 + 0.125, z: zBase, dx: ST, dy: 5.875, dz: 16.375, showLabel: idx === 0 });
+        boxes.push({ id: "K", x: 27.3125, y: y0 + 0.125, z: zBase, dx: ST, dy: 5.875, dz: 16.375, showLabel: false });
+        boxes.push({ id: "L", x: 14.9375, y: y0 + 0.375, z: zBase + 0.375, dx: 12.625, dy: 0.375, dz: 16.0, showLabel: idx === 0 });
+      });
+
+      return boxes;
+    }
+
+    function projectPoint(x, y, z, cx, cy, scale) {
+      let px = x - 21.25;
+      let py = y - 22.0;
+      let pz = z - 9.5;
+      let cosY = Math.cos(rotY), sinY = Math.sin(rotY);
+      let x1 = px * cosY + pz * sinY;
+      let z1 = -px * sinY + pz * cosY;
+      let cosX = Math.cos(rotX), sinX = Math.sin(rotX);
+      let y2 = py * cosX - z1 * sinX;
+      let z2 = py * sinX + z1 * cosX;
+      return { sx: cx + x1 * scale, sy: cy - y2 * scale, depth: z2 };
+    }
+
+    function shadeHex(hex, factor) {
+      const n = parseInt(hex.slice(1), 16);
+      const r = Math.min(255, Math.max(0, Math.round(((n >> 16) & 255) * factor)));
+      const g = Math.min(255, Math.max(0, Math.round(((n >> 8) & 255) * factor)));
+      const b = Math.min(255, Math.max(0, Math.round((n & 255) * factor)));
+      return `rgb(${r},${g},${b})`;
+    }
+
+    function draw() {
+      const dpr = window.devicePixelRatio || 1;
+      const rect = canvas.getBoundingClientRect();
+      if (rect.width === 0) return;
+      canvas.width = rect.width * dpr;
+      canvas.height = 380 * dpr;
+      ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+
+      const W = rect.width;
+      const H = 380;
+      ctx.clearRect(0, 0, W, H);
+
+      const explode = parseFloat(explodeSlider.value) / 100;
+      const drawerPull = parseFloat(drawerSlider.value) / 100;
+      const scale = Math.min(W, H) / (58 + explode * 18);
+      const cx = W * 0.5;
+      const cy = H * 0.53;
+
+      const boxes = buildBoxes(explode, drawerPull);
+      const faces = [];
+      const labels = [];
+
+      boxes.forEach((b, boxIdx) => {
+        const x0 = b.x, x1 = b.x + b.dx;
+        const y0 = b.y, y1 = b.y + b.dy;
+        const z0 = b.z, z1 = b.z + b.dz;
+
+        const v = [
+          projectPoint(x0, y0, z0, cx, cy, scale),
+          projectPoint(x1, y0, z0, cx, cy, scale),
+          projectPoint(x1, y1, z0, cx, cy, scale),
+          projectPoint(x0, y1, z0, cx, cy, scale),
+          projectPoint(x0, y0, z1, cx, cy, scale),
+          projectPoint(x1, y0, z1, cx, cy, scale),
+          projectPoint(x1, y1, z1, cx, cy, scale),
+          projectPoint(x0, y1, z1, cx, cy, scale)
+        ];
+
+        const rawFaces = [
+          { idx: [4, 5, 6, 7], shade: 1.02 },
+          { idx: [0, 3, 2, 1], shade: 0.78 },
+          { idx: [3, 7, 6, 2], shade: 1.12 },
+          { idx: [0, 1, 5, 4], shade: 0.68 },
+          { idx: [1, 2, 6, 5], shade: 0.90 },
+          { idx: [0, 4, 7, 3], shade: 0.86 }
+        ];
+
+        rawFaces.forEach(rf => {
+          const pts = rf.idx.map(i => v[i]);
+          const avgDepth = (pts[0].depth + pts[1].depth + pts[2].depth + pts[3].depth) / 4;
+          faces.push({ pts, depth: avgDepth, id: b.id, shade: rf.shade, boxIdx });
+        });
+
+        if (b.showLabel) {
+          const center = projectPoint(x0 + b.dx / 2, y0 + b.dy / 2, z0 + b.dz / 2, cx, cy, scale);
+          labels.push({ id: b.id, sx: center.sx, sy: center.sy, depth: center.depth });
+        }
+      });
+
+      faces.sort((a, b) => a.depth - b.depth);
+
+      faces.forEach(f => {
+        const meta = PARTS_META[f.id];
+        const isSel = f.id === selectedPart;
+        ctx.beginPath();
+        ctx.moveTo(f.pts[0].sx, f.pts[0].sy);
+        ctx.lineTo(f.pts[1].sx, f.pts[1].sy);
+        ctx.lineTo(f.pts[2].sx, f.pts[2].sy);
+        ctx.lineTo(f.pts[3].sx, f.pts[3].sy);
+        ctx.closePath();
+
+        ctx.fillStyle = shadeHex(meta.color, isSel ? f.shade * 1.08 : f.shade * 0.92);
+        ctx.globalAlpha = isSel ? 1.0 : 0.82;
+        ctx.fill();
+
+        ctx.lineWidth = isSel ? 1.5 : 0.65;
+        ctx.strokeStyle = isSel ? "#1E3A5F" : "rgba(44, 29, 17, 0.55)";
+        ctx.stroke();
+      });
+      ctx.globalAlpha = 1.0;
+
+      labelHitBoxes = [];
+      if (labelsToggle.checked) {
+        labels.sort((a, b) => a.depth - b.depth);
+        ctx.font = "bold 11px ui-monospace, SFMono-Regular, Menlo, monospace";
+        ctx.textAlign = "center";
+        ctx.textBaseline = "middle";
+
+        labels.forEach(lb => {
+          const isSel = lb.id === selectedPart;
+          const r = isSel ? 11 : 9.5;
+          ctx.beginPath();
+          ctx.arc(lb.sx, lb.sy, r, 0, Math.PI * 2);
+          ctx.fillStyle = isSel ? "#1E3A5F" : "#FFFDF9";
+          ctx.fill();
+          ctx.lineWidth = isSel ? 2 : 1.3;
+          ctx.strokeStyle = isSel ? "#FFFDF9" : "#3A2312";
+          ctx.stroke();
+
+          ctx.fillStyle = isSel ? "#FFFFFF" : "#231409";
+          ctx.fillText(lb.id, lb.sx, lb.sy + 0.5);
+          labelHitBoxes.push({ id: lb.id, sx: lb.sx, sy: lb.sy, r: r + 3 });
+        });
+      }
+    }
+
+    canvas.addEventListener("pointerdown", e => {
+      const rect = canvas.getBoundingClientRect();
+      const mx = e.clientX - rect.left;
+      const my = e.clientY - rect.top;
+
+      for (let i = labelHitBoxes.length - 1; i >= 0; i--) {
+        const hb = labelHitBoxes[i];
+        if (Math.hypot(mx - hb.sx, my - hb.sy) <= hb.r) {
+          selectPart(hb.id);
+          return;
+        }
+      }
+      isDragging = true;
+      lastX = e.clientX;
+      lastY = e.clientY;
+      canvas.setPointerCapture(e.pointerId);
+    });
+
+    canvas.addEventListener("pointermove", e => {
+      if (!isDragging) return;
+      const dx = e.clientX - lastX;
+      const dy = e.clientY - lastY;
+      lastX = e.clientX;
+      lastY = e.clientY;
+      rotY += dx * 0.01;
+      rotX = Math.max(-1.2, Math.min(1.2, rotX + dy * 0.01));
+      draw();
+    });
+
+    canvas.addEventListener("pointerup", () => { isDragging = false; });
+
+    explodeSlider.addEventListener("input", draw);
+    drawerSlider.addEventListener("input", draw);
+    labelsToggle.addEventListener("change", draw);
+
+    document.getElementById("btnIso").onclick = () => { rotY = -0.52; rotX = 0.32; draw(); };
+    document.getElementById("btnFront").onclick = () => { rotY = 0.0; rotX = 0.0; draw(); };
+    document.getElementById("btnSide").onclick = () => { rotY = -Math.PI / 2; rotX = 0.0; draw(); };
+
+    window.addEventListener("resize", draw);
+    window.addEventListener("themechange", draw);
+    selectPart("A");
+  </script>
+</body>
+</html>
+
